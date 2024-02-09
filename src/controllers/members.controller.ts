@@ -35,7 +35,9 @@ const getMembersPaged = async (c: Context) => {
 
 	const countSql = sql.empty()
 	// countSql.append(sql`SELECT COUNT(*) FROM members WHERE 1=1`)
-	countSql.append(sql`SELECT CAST(COUNT(*) AS INTEGER) FROM members WHERE 1=1`)
+	countSql.append(
+		sql`SELECT CAST(COUNT(*) AS INTEGER) FROM members WHERE 1=1`,
+	)
 
 	const finalSql = sql.empty()
 	finalSql.append(sql`id < ${p_startingid}`)
@@ -49,12 +51,12 @@ const getMembersPaged = async (c: Context) => {
 		finalSql.append(sql` AND search_vector @@ to_tsquery(${searchParam})`)
 		countSql.append(sql` AND search_vector @@ to_tsquery(${searchParam})`)
 	}
- 
+
 	try {
 		// const searchParam = "Shal:*"
 		const db = drizzle(pgSql)
 		const res = await db.execute(countSql)
-		const rowCount = res[0].count 
+		const rowCount = res[0].count
 		const result = await db.select({
 			id: members.id,
 			firstname: members.firstname,
@@ -67,7 +69,7 @@ const getMembersPaged = async (c: Context) => {
 			notes: members.notes,
 		})
 			.from(members).orderBy(desc(members.id)).limit(p_rowlimit)
-		    .where(finalSql)
+			.where(finalSql)
 		let lastId = 0
 		if (result.length > 0) {
 			lastId = result[result.length - 1].id

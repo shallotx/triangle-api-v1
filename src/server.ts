@@ -1,3 +1,4 @@
+/// <reference lib="deno.unstable" />
 import { cors, Hono, logger } from './deps.ts'
 import { HTTPException } from './deps.ts'
 import { showRoutes } from './deps.ts'

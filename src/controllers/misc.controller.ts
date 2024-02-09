@@ -11,18 +11,46 @@ import { membersOther } from '../db/schema/membersOther.ts'
 import { nodemailer } from '../deps.ts'
 import { emailSchema } from '../db/schema/zod.ts'
 import CsvHelper from '../helpers/csv.helper.ts'
+import kvService from '../services/kv.service.ts'
 
+// const getDonationCodes = async (c: Context) => {
+// 	try {
+// 		const isActive = true
+// 		const db = drizzle(pgSql)
+// 		const result = await db.select().from(donation_code).where(
+// 			eq(donation_code.is_active, isActive),
+// 		)
+// 		return c.json({
+// 			donationCodes: result,
+// 			status: 'success',
+// 			results: result.length,
+// 		})
+// 	} catch (error) {
+// 		return c.json(
+// 			{
+// 				error,
+// 			},
+// 			400,
+// 		)
+// 	}
+// }
+
+/* for KV version */
 const getDonationCodes = async (c: Context) => {
 	try {
-		const isActive = true
-		const db = drizzle(pgSql)
-		const result = await db.select().from(donation_code).where(
-			eq(donation_code.is_active, isActive),
-		)
+		const dts = await kvService.getDonationCodes()
+		if (typeof dts === 'string') {
+			return c.json(
+				{
+					dts,
+				},
+				500,
+			)
+		}
 		return c.json({
-			donationCodes: result,
+			donationCodes: dts,
 			status: 'success',
-			results: result.length,
+			results: dts.length,
 		})
 	} catch (error) {
 		return c.json(
@@ -34,26 +62,87 @@ const getDonationCodes = async (c: Context) => {
 	}
 }
 
+// const getRecoveryLinks = async (c: Context) => {
+// 	try {
+// 		const isActive = true
+// 		const db = drizzle(pgSql)
+// 		const result = await db.select().from(links)
+// 		return c.json({
+// 			recoveryLinks: result,
+// 			status: 'success',
+// 			results: result.length,
+// 		})
+// 	} catch (error) {
+// 		return c.json(
+// 			{
+// 				error,
+// 			},
+// 			400,
+// 		)
+// 	}
+// }
+
+/* for KV version */
 const getRecoveryLinks = async (c: Context) => {
 	try {
-		const isActive = true
-		const db = drizzle(pgSql)
-		const result = await db.select().from(links)
-		return c.json({
-			recoveryLinks: result,
-			status: 'success',
-			results: result.length,
-		})
-	} catch (error) {
+	  const dts = await kvService.getRecoveryLinks()
+	  if (typeof dts === 'string')
+	  {
 		return c.json(
-			{
-				error,
-			},
-			400,
-		)
+		  {
+			dts,
+		  },
+		  500
+		);
+	  } 
+	  return c.json({recoveryLinks: dts,  status: 'success',results: dts.length}) 
+	} catch (error) {
+	  return c.json(
+		{
+		  error,
+		},
+		400
+	  );
 	}
-}
+};
+  
+// const getProducts = async (c: Context) => {
+// 	let p_acct = 'Tom'
+// 	let p_testMode = false
+// 	const { testMode, account } = c.req.query()
+// 	if (testMode) {
+// 		p_testMode = parseBool(testMode)
+// 	}
+// 	if (account) {
+// 		p_acct = account
+// 	}
+// 	try {
+// 		const isActive = true
+// 		const db = drizzle(pgSql)
+// 		const result = await db.select().from(products)
+// 			.where(
+// 				and(
+// 					eq(products.is_active, isActive),
+// 					eq(products.account, p_acct),
+// 					eq(products.is_test_mode, p_testMode),
+// 				),
+// 			)
+// 		return c.json({
+// 			products: result,
+// 			status: 'success',
+// 			results: result.length,
+// 		})
+// 	} catch (error) {
+// 		return c.json(
+// 			{
+// 				error,
+// 			},
+// 			400,
+// 		)
+// 	}
+// }
 
+/* for KV version */
 const getProducts = async (c: Context) => {
 	let p_acct = 'Tom'
 	let p_testMode = false
@@ -65,21 +154,16 @@ const getProducts = async (c: Context) => {
 		p_acct = account
 	}
 	try {
-		const isActive = true
-		const db = drizzle(pgSql)
-		const result = await db.select().from(products)
-			.where(
-				and(
-					eq(products.is_active, isActive),
-					eq(products.account, p_acct),
-					eq(products.is_test_mode, p_testMode),
-				),
+		const dts = await kvService.getProducts(p_testMode, p_acct)
+		if (typeof dts === 'string') {
+			return c.json(
+				{
+					dts,
+				},
+				500,
 			)
-		return c.json({
-			products: result,
-			status: 'success',
-			results: result.length,
-		})
+		}
+		return c.json({ products: dts, status: 'success', results: dts.length })
 	} catch (error) {
 		return c.json(
 			{

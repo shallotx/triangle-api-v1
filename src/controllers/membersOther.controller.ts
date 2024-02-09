@@ -38,7 +38,9 @@ const getMembersOtherPaged = async (c: Context) => {
 
 	const countSql = sql.empty()
 	// countSql.append(sql`SELECT COUNT(*) FROM members_other WHERE 1=1`)
-	countSql.append(sql`SELECT CAST(COUNT(*) AS INTEGER) FROM members WHERE 1=1`)
+	countSql.append(
+		sql`SELECT CAST(COUNT(*) AS INTEGER) FROM members WHERE 1=1`,
+	)
 
 	const finalSql = sql.empty()
 	finalSql.append(sql`id < ${p_startingid}`)

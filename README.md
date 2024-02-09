@@ -1,6 +1,7 @@
 ## Triangle API
 
-- hosted on Fly.io
-- 
+- hosted on Deno Deploy
+- using KV
+- db hosted on Fly.io
 
-fly status --app triangle-api-pg 
+ 
