@@ -1,7 +1,0 @@
-# flyctl launch added from .gitignore
-**/node_modules
-**/.env
-**/.secrets
-**/.dev.vars
-**/.vscode
-fly.toml
