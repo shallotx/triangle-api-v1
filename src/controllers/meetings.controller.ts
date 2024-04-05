@@ -7,60 +7,10 @@ import {
 	discussion_type,
 	meeting_type,
 	meetings,
-	virtual_meetings,
+ 
 } from '../db/schema/meetings.ts'
 
-import kvService from '../services/kv.service.ts'
-
-// const getMeetingTypes = async (c: Context) => {
-// 	try {
-// 		const isActive = true
-// 		const db = drizzle(pgSql)
-// 		const result = await db.select().from(meeting_type).where(
-// 			eq(meeting_type.is_active, isActive),
-// 		)
-// 		return c.json({
-// 			meetingTypes: result,
-// 			status: 'success',
-// 			results: result.length,
-// 		})
-// 	} catch (error) {
-// 		return c.json(
-// 			{
-// 				error,
-// 			},
-// 			400,
-// 		)
-// 	}
-// }
-
-/* for KV version */
-const getMeetingTypes = async (c: Context) => {
-	try {
-		const dts = await kvService.getMeetingTypes()
-		if (typeof dts === 'string') {
-			return c.json(
-				{
-					dts,
-				},
-				500,
-			)
-		}
-		return c.json({
-			meetingTypes: dts,
-			status: 'success',
-			results: dts.length,
-		})
-	} catch (error) {
-		return c.json(
-			{
-				error,
-			},
-			400,
-		)
-	}
-}
-
+ 
 const getMeetings = async (c: Context) => {
 	try {
 		const isActive = true
@@ -98,58 +48,9 @@ const getMeetings = async (c: Context) => {
 		)
 	}
 }
-
-// const getVirtualMeetings = async (c: Context) => {
-// 	try {
-// 		const isActive = true
-// 		const db = drizzle(pgSql)
-// 		const result = await db.select().from(virtual_meetings).where(
-// 			eq(virtual_meetings.is_active, isActive),
-// 		)
-// 		return c.json({
-// 			virtualMeetings: result,
-// 			status: 'success',
-// 			results: result.length,
-// 		})
-// 	} catch (error) {
-// 		return c.json(
-// 			{
-// 				error,
-// 			},
-// 			400,
-// 		)
-// 	}
-// }
-
-/* for KV version */
-const getVirtualMeetings = async (c: Context) => {
-	try {
-		const dts = await kvService.getVirtualMeetings()
-		if (typeof dts === 'string') {
-			return c.json(
-				{
-					dts,
-				},
-				500,
-			)
-		}
-		return c.json({
-			virtualMeetings: dts,
-			status: 'success',
-			results: dts.length,
-		})
-	} catch (error) {
-		return c.json(
-			{
-				error,
-			},
-			400,
-		)
-	}
-}
-
+ 
 export default {
-	getMeetingTypes,
+ 
 	getMeetings,
-	getVirtualMeetings,
+ 
 }

@@ -10,37 +10,33 @@ import {
 // import { adminUserInsert } from '../db/schema/zod.ts'
 import { HTTPException } from '../deps.ts'
 
-const kv = await Deno.openKv();
-// Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddo_9mNxD8VccFoLnB4l1EKEMBXOPZKf113xUqqN')
-// const kv = await Deno.openKv(
-// 	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
-// )
+// const kv = await Deno.openKv();
 
+ /*
+  KV on Deno Deploy
+*/
+
+Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
+const kv = await Deno.openKv(
+	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
+)
+ 
 class KVService {
-	public static async getDiscussionTypes(): Promise<
-		Discussion_Type[] | string
+	public static async getDiscussionTypes(): Promise<Discussion_Type[]  
 	> {
 		const retVal = <Discussion_Type[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['discussion_types'] })) {
-				retVal.push(res.value as Discussion_Type)
-			}
-			return retVal
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['discussion_types'] })) {
+			retVal.push(res.value as Discussion_Type)
 		}
+		return retVal
 	}
 
-	public static async getMeetingTypes(): Promise<Meeting_Type[] | string> {
+	public static async getMeetingTypes(): Promise<Meeting_Type[]> {
 		const retVal = <Meeting_Type[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['meeting_types'] })) {
-				retVal.push(res.value as Meeting_Type)
-			}
-			return retVal
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['meeting_types'] })) {
+			retVal.push(res.value as Meeting_Type)
 		}
+		return retVal
 	}
 
 	public static async getMeetingTypeByCode(
@@ -57,63 +53,49 @@ class KVService {
 		}
 	}
 
-	public static async getVirtualMeetings(): Promise<
-		Virtual_Meeting[] | string
-	> {
+	public static async getVirtualMeetings(): Promise<Virtual_Meeting[]> {
 		const retVal = <Virtual_Meeting[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['virtual_meetings'] })) {
-				retVal.push(res.value as Virtual_Meeting)
-			}
-			return retVal
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['virtual_meetings'] })) {
+			retVal.push(res.value as Virtual_Meeting)
 		}
+		return retVal
 	}
 
-	public static async getRecoveryLinks(): Promise<Links[] | string> {
+	public static async getRecoveryLinks(): Promise<Links[]> {
 		const retVal = <Links[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['recovery_links'] })) {
-				retVal.push(res.value as Links)
-			}
-			return retVal
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['recovery_links'] })) {
+			retVal.push(res.value as Links)
 		}
+		return retVal
 	}
 
 	public static async getProducts(
-		testmode: boolean,
+		testmode: string,
 		account: string,
-	): Promise<Product[] | string> {
+	): Promise<Product[]> {
+		let p_testMode = false
+		if (testmode) {
+		p_testMode = this.parseBool(testmode)
+	}
 		const retVal = <Product[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['products'] })) {
-				retVal.push(res.value as Product)
-			}
-
-			const result = retVal.filter((p) =>
-				p.is_active && p.is_test_mode === testmode &&
-				p.account === account
-			)
-			return result
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['products'] })) {
+			retVal.push(res.value as Product)
 		}
+
+		const result = retVal.filter((p) =>
+			p.is_active && p.is_test_mode === p_testMode &&
+			p.account === account
+		)
+		return result
 	}
 
-	public static async getDonationCodes(): Promise<Donation_Code[] | string> {
+	public static async getDonationCodes(): Promise<Donation_Code[]> {
 		const retVal = <Donation_Code[]> []
-		try {
-			for await (const res of kv.list({ prefix: ['donation_codes'] })) {
-				retVal.push(res.value as Donation_Code)
-			}
-			const result = retVal.filter((dc) => dc.is_active)
-			return result
-		} catch (error) {
-			return error as string
+		for await (const res of kv.list({ prefix: ['donation_codes'] })) {
+			retVal.push(res.value as Donation_Code)
 		}
+		const result = retVal.filter((dc) => dc.is_active)
+		return result
 	}
 
 	public static async upsertAdminUser(adminuser: AdminUserKV) {
@@ -163,6 +145,35 @@ class KVService {
 		const id = (await kv.get(adminuserByEmailKey)).value as string
 		const adminuserKey = ['adminuser', id]
 		return (await kv.get(adminuserKey)).value as AdminUserKV
+	}
+
+	private static parseBool = (str: string | null) => {
+		if (str == null) {
+			return false
+		}
+	
+		if (typeof str === 'boolean') {
+			if (str === true) {
+				return true
+			}
+	
+			return false
+		}
+	
+		if (typeof str === 'string') {
+			if (str == '') {
+				return false
+			}
+	
+			str = str.replace(/^\s+|\s+$/g, '')
+			if (str.toLowerCase() == 'true' || str.toLowerCase() == 'yes') {
+				return true
+			}
+	
+			str = str.replace(/,/g, '.')
+			str = str.replace(/^\s*\-\s*/g, '-')
+		}
+		return false
 	}
 }
 

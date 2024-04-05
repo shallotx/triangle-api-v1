@@ -11,10 +11,15 @@ import { adminUserInsert } from '../db/schema/zod.ts'
 import { HTTPException } from '../deps.ts'
 
 //const kv = await Deno.openKv();
-Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddo_9mNxD8VccFoLnB4l1EKEMBXOPZKf113xUqqN')
-const kv = await Deno.openKv(
-	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
-)
+ /*
+  KV on Deno Deploy
+  */
+  Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
+  const kv = await Deno.openKv(
+	  'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
+  )
+ 
+
 
 class KVUtilityService {
 	/*

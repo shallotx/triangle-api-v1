@@ -10,9 +10,11 @@
  */
 // import { kv } from "@/utils/db.ts";
 
-const kv = await Deno.openKv()
-// Deno.env.set("DENO_KV_ACCESS_TOKEN", "ddp_rvT9rbEoO0BntT77Twc1Rmus261tLr3PfWSR");
-// const kv =await Deno.openKv("https://api.deno.com/databases/c5e94032-46ba-462b-8fd1-54fbb7d445d7/connect");
+// const kv = await Deno.openKv()
+ Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddo_9mNxD8VccFoLnB4l1EKEMBXOPZKf113xUqqN')
+ const kv = await Deno.openKv(
+	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
+)
 
 // https://github.com/GoogleChromeLabs/jsbi/issues/30#issuecomment-521460510
 function replacer(_key: unknown, value: unknown) {
