@@ -10,16 +10,19 @@ import {
 // import { adminUserInsert } from '../db/schema/zod.ts'
 import { HTTPException } from '../deps.ts'
 
-// const kv = await Deno.openKv();
-
  /*
   KV on Deno Deploy
 */
+const kv = await Deno.openKv();
 
-Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
-const kv = await Deno.openKv(
-	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
-)
+ /*
+  KV on Deno Deploy for local dev
+*/
+
+// Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
+// const kv = await Deno.openKv(
+// 	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
+// )
  
 class KVService {
 	public static async getDiscussionTypes(): Promise<Discussion_Type[]  
