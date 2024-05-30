@@ -1,18 +1,17 @@
 // import { drizzle as drizzlserv, drizzlePool} from '../deps.ts';
-import { Context } from '../deps.ts'
+import { Context } from '@hono/hono'
 import { drizzle } from '../deps.ts'
 import { and, eq, inArray, sql } from '../deps.ts'
 import pgSql from '../db/db.ts'
 import config from '../config/default.ts'
-import { donation_code, links } from '../db/schema/misc.ts'
+import { donation_code, links } from '../db/schema/misc.schema.ts'
 import { products } from '../db/schema/products.ts'
 import { members } from '../db/schema/members.ts'
 import { membersOther } from '../db/schema/membersOther.ts'
 import { nodemailer } from '../deps.ts'
 import { emailSchema } from '../db/schema/zod.ts'
 import CsvHelper from '../helpers/csv.helper.ts'
- 
- 
+
 const getMembersForCSV = async (c: Context) => {
 	const { membershipIsActive } = c.req.query()
 	const activeArray = [true, false]
@@ -200,7 +199,6 @@ const sendmail = async (c: Context) => {
 // }
 
 export default {
- 
 	sendmail,
 	// sendInviteEmail,
 	getMembersForCSV,

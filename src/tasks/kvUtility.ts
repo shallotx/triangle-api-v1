@@ -13,8 +13,8 @@ import kvService from '../services/kv.service.ts'
 // const res = await kvUtilityService.seedLinks()
 // const res = await kvUtilityService.seedProducts()
 // const res = await kvUtilityService.seedMeetingTypes()
- // const res = await kvUtilityService.seedDiscussionTypes()
- const res = await kvUtilityService.seedVirtualMeetings()
+// const res = await kvUtilityService.seedDiscussionTypes()
+const res = await kvUtilityService.seedVirtualMeetings()
 
 //const res = await kvUtilityService.deleteAllDonationCodes()
 // const res = await kvUtilityService.deleteAllMeetingTypes()

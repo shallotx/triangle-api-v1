@@ -7,10 +7,8 @@ import {
 	discussion_type,
 	meeting_type,
 	meetings,
- 
 } from '../db/schema/meetings.ts'
 
- 
 const getMeetings = async (c: Context) => {
 	try {
 		const isActive = true
@@ -48,9 +46,7 @@ const getMeetings = async (c: Context) => {
 		)
 	}
 }
- 
+
 export default {
- 
 	getMeetings,
- 
 }

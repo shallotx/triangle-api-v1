@@ -8,14 +8,14 @@ import {
 	Virtual_Meeting,
 } from '../db/schema/kv/kv.models.ts'
 // import { adminUserInsert } from '../db/schema/zod.ts'
-import { HTTPException } from '../deps.ts'
+import { HTTPException } from '@hono/hono/http-exception'
 
- /*
+/*
   KV on Deno Deploy
 */
-const kv = await Deno.openKv();
+const kv = await Deno.openKv()
 
- /*
+/*
   KV on Deno Deploy for local dev
 */
 
@@ -23,10 +23,9 @@ const kv = await Deno.openKv();
 // const kv = await Deno.openKv(
 // 	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
 // )
- 
+
 class KVService {
-	public static async getDiscussionTypes(): Promise<Discussion_Type[]  
-	> {
+	public static async getDiscussionTypes(): Promise<Discussion_Type[]> {
 		const retVal = <Discussion_Type[]> []
 		for await (const res of kv.list({ prefix: ['discussion_types'] })) {
 			retVal.push(res.value as Discussion_Type)
@@ -78,8 +77,8 @@ class KVService {
 	): Promise<Product[]> {
 		let p_testMode = false
 		if (testmode) {
-		p_testMode = this.parseBool(testmode)
-	}
+			p_testMode = this.parseBool(testmode)
+		}
 		const retVal = <Product[]> []
 		for await (const res of kv.list({ prefix: ['products'] })) {
 			retVal.push(res.value as Product)
@@ -154,25 +153,25 @@ class KVService {
 		if (str == null) {
 			return false
 		}
-	
+
 		if (typeof str === 'boolean') {
 			if (str === true) {
 				return true
 			}
-	
+
 			return false
 		}
-	
+
 		if (typeof str === 'string') {
 			if (str == '') {
 				return false
 			}
-	
+
 			str = str.replace(/^\s+|\s+$/g, '')
 			if (str.toLowerCase() == 'true' || str.toLowerCase() == 'yes') {
 				return true
 			}
-	
+
 			str = str.replace(/,/g, '.')
 			str = str.replace(/^\s*\-\s*/g, '-')
 		}

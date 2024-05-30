@@ -10,20 +10,20 @@ import {
 import { adminUserInsert } from '../db/schema/zod.ts'
 import { HTTPException } from '../deps.ts'
 
- /*
-  KV on Deno Deploy KV on Deno Deploy  
+/*
+  KV on Deno Deploy KV on Deno Deploy
  */
 
 //const kv = await Deno.openKv();
 
- /*
+/*
   KV on Deno Deploy KV on Deno Deploy for local dev
  */
-  Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
-  const kv = await Deno.openKv(
-	  'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
-  )
- 
+Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddp_cVASLZzvhwQfIbd7ZrHuj1yeKPmROn1eLm7e')
+const kv = await Deno.openKv(
+	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
+)
+
 class KVUtilityService {
 	/*
      Discussion Types
@@ -316,12 +316,11 @@ class KVUtilityService {
      Links
   */
 	public static async seedLinks(): Promise<boolean | string> {
-    
-    for await (const res of kv.list({ prefix: ['recovery_links'] })) {
+		for await (const res of kv.list({ prefix: ['recovery_links'] })) {
 			const ln = res.value as Virtual_Meeting
 			await kv.delete(['recovery_links', ln.id])
 		}
-    
+
 		const mt1: Links = {
 			id: crypto.randomUUID(),
 			link_type: 'literature',

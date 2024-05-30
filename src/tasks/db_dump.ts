@@ -11,8 +11,8 @@
 // import { kv } from "@/utils/db.ts";
 
 // const kv = await Deno.openKv()
- Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddo_9mNxD8VccFoLnB4l1EKEMBXOPZKf113xUqqN')
- const kv = await Deno.openKv(
+Deno.env.set('DENO_KV_ACCESS_TOKEN', 'ddo_9mNxD8VccFoLnB4l1EKEMBXOPZKf113xUqqN')
+const kv = await Deno.openKv(
 	'https://api.deno.com/databases/62ce7b32-d1c9-4095-91c6-6399581aef77/connect',
 )
 

@@ -1,5 +1,6 @@
-import { load } from '../deps.ts'
-await load({ export: true })
+import * as mod from '@std/dotenv'
+
+await mod.load({ export: true })
 
 const config: {
 	dbURL: string
