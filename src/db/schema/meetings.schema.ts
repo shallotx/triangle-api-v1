@@ -5,7 +5,7 @@ import {
 	serial,
 	text,
 	timestamp,
-} from '../../deps.ts'
+} from 'drizzle-orm/pg-core'
 
 export const meeting_type = pgTable('meeting_type', {
 	id: serial('id').primaryKey(),
@@ -13,6 +13,7 @@ export const meeting_type = pgTable('meeting_type', {
 	is_active: boolean('is_active'),
 	name: text('name'),
 	created_at: timestamp('created_at', { precision: 6, withTimezone: true }),
+	updated_at: timestamp('updated_at', { precision: 6, withTimezone: true }),
 })
 export const discussion_type = pgTable('discussion_type', {
 	id: serial('id').primaryKey(),
@@ -20,6 +21,7 @@ export const discussion_type = pgTable('discussion_type', {
 	is_active: boolean('is_active'),
 	name: text('name'),
 	created_at: timestamp('created_at', { precision: 6, withTimezone: true }),
+	updated_at: timestamp('updated_at', { precision: 6, withTimezone: true }),
 })
 
 export const meetings = pgTable('meetings', {
@@ -45,4 +47,5 @@ export const virtual_meetings = pgTable('virtual_meetings', {
 	is_active: boolean('is_active'),
 	meeting_time: text('meeting_time'),
 	created_at: timestamp('created_at', { precision: 6, withTimezone: true }),
+	updated_at: timestamp('updated_at', { precision: 6, withTimezone: true }),
 })

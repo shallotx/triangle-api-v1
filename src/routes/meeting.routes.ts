@@ -1,25 +1,71 @@
-import { Hono } from '../deps.ts'
-import meetingsController from '../controllers/meetings.controller.ts'
-import kvService from '../services/kv.service.ts'
+import { Hono } from '@hono/hono'
+import { eq } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/neon-http'
+import { neon } from '@neon/serverless'
+import config from '../config/default.ts'
+import {
+	discussion_type,
+	meeting_type,
+	meetings,
+	virtual_meetings,
+} from '../db/schema/meetings.schema.ts'
+ 
 
 const router = new Hono()
 
-router.get('/', meetingsController.getMeetings)
-router.get('/meetingtypes', async (c) => {
-	const dts = await kvService.getMeetingTypes()
-	return c.json({
-		meetingTypes: dts,
-		status: 'success',
-		results: dts.length,
+router.get('/', async (c) => {
+	const sql = neon(config.dbURL)
+	const db = drizzle(sql)
+	const isActive = true
+	const result = await db.select({
+		id: meetings.id,
+		day: meetings.day,
+		name: meetings.name,
+		room: meetings.room,
+		meeting_time: meetings.meeting_time,
+		donation_code: meetings.donation_code,
+		sortorder: meetings.sortorder,
+		meeting_type_code: meeting_type.code,
+		discuss_type_code: discussion_type.code,
 	})
-})
-router.get('/virtual', async (c) => {
-	const dts = await kvService.getVirtualMeetings()
+		.from(meetings)
+		.leftJoin(meeting_type, eq(meeting_type.id, meetings.meeting_type))
+		.leftJoin(
+			discussion_type,
+			eq(discussion_type.id, meetings.discuss_type),
+		)
+		.where(eq(meetings.is_active, isActive))
 	return c.json({
-		virtualMeetings: dts,
+		meetings: result,
 		status: 'success',
-		results: dts.length,
+		results: result.length,
 	})
 })
 
+router.get('/meetingtypes', async (c) => {
+	const sql = neon(config.dbURL)
+	const db = drizzle(sql)
+	const isActive = true
+	const result = await db.select().from(meeting_type)
+		.where(eq(meeting_type.is_active, isActive))
+	return c.json({
+		meetingTypes: result,
+		status: 'success',
+		results: result.length,
+	})
+})
+
+router.get('/virtual', async (c) => {
+	const sql = neon(config.dbURL)
+	const db = drizzle(sql)
+	const isActive = true
+	const result = await db.select().from(virtual_meetings)
+		.where(eq(virtual_meetings.is_active, isActive))
+	return c.json({
+		virtualMeetings: result,
+		status: 'success',
+		results: result.length,
+	})
+})
+ 
 export default router

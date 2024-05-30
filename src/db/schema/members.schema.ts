@@ -5,7 +5,7 @@ import {
 	serial,
 	text,
 	timestamp,
-} from '../../deps.ts'
+} from 'drizzle-orm/pg-core'
 
 export const members = pgTable('members', {
 	id: serial('id').primaryKey(),
