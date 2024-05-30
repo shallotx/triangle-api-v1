@@ -4,7 +4,7 @@ import { cors } from '@hono/hono/cors'
 import { HTTPException } from '@hono/hono/http-exception'
 import { showRoutes } from '@hono/hono/dev'
 import miscRoutes from './routes/misc.routes.ts'
-// import meetingRoutes from './routes/meeting.routes.ts'
+import meetingRoutes from './routes/meeting.routes.ts'
 
 // import adminRoutes from './routes/admin.routes.ts'
 // import stripeRoutes from './routes/stripe.routes.ts'
@@ -43,7 +43,7 @@ app.get('/', (c) => {
 	return c.text('Hello Hono!')
 })
 
-// app.route('/meetings', meetingRoutes)
+app.route('/meetings', meetingRoutes)
 app.route('/misc', miscRoutes)
 // app.route('/admin', adminRoutes)
 // app.route('/stripe', stripeRoutes)
