@@ -5,6 +5,7 @@ await mod.load({ export: true })
 const config: {
 	dbURL: string
 	emailTo: string
+	resendKey: string
 	stripeKey: string
 	jwtAccessExpiration: number
 	jwtRefeshExpiration: number
@@ -13,6 +14,7 @@ const config: {
 } = {
 	dbURL: Deno.env.get('DATABASE_URL') as unknown as string,
 	emailTo: Deno.env.get('EMAIL_ADDRESS_TO') as unknown as string,
+	resendKey: Deno.env.get('RESEND_API_KEY') as unknown as string,
 	stripeKey: Deno.env.get('STRIPE_SECRET_KEY') as unknown as string,
 	jwtAccessExpiration: Number(
 		Deno.env.get('JWT_ACCESS_TOKEN_EXP'),

@@ -1,4 +1,4 @@
-import { Hono } from '../deps.ts'
+import { Hono } from '@hono/hono'
 import stripeController from '../controllers/stripe.controller.ts'
 import auth from '../middleware/auth.ts'
 const router = new Hono()

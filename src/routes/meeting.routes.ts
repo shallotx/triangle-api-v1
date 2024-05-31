@@ -9,7 +9,6 @@ import {
 	meetings,
 	virtual_meetings,
 } from '../db/schema/meetings.schema.ts'
- 
 
 const router = new Hono()
 
@@ -67,5 +66,5 @@ router.get('/virtual', async (c) => {
 		results: result.length,
 	})
 })
- 
+
 export default router

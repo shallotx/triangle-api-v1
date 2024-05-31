@@ -7,7 +7,7 @@ import HashHelper from '../helpers/hash.helper.ts'
 import CryptoHelper from '../helpers/crypto.helper.ts'
 import config from '../config/default.ts'
 import { /* and, */ eq } from 'drizzle-orm'
-import { setCookie, getCookie } from "@hono/hono/cookie";
+import { getCookie, setCookie } from '@hono/hono/cookie'
 import { neon } from '@neon/serverless'
 import { drizzle } from 'drizzle-orm/neon-http'
 import { type JWTPayload } from '@cross/jwt'

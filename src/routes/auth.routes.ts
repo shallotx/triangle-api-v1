@@ -1,4 +1,4 @@
-import { Hono } from '../deps.ts'
+import { Hono } from '@hono/hono'
 import authController from '../controllers/auth.controller.ts'
 import auth from '../middleware/auth.ts'
 

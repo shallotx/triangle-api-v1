@@ -2,7 +2,7 @@ import { eq, inArray } from 'drizzle-orm'
 import { createFactory } from '@hono/hono/factory'
 import { members } from '../db/schema/members.schema.ts'
 import { membersOther } from '../db/schema/membersOther.schema.ts'
-import StripeService from '../services/stripe.service.ts'
+import { stripe } from '../deps.ts'
 import config from '../config/default.ts'
 import CsvHelper from '../helpers/csv.helper.ts'
 import CryptoHelper from '../helpers/crypto.helper.ts'
@@ -50,12 +50,14 @@ const checkForMembership = factory.createHandlers(async (c) => {
 		}
 		if (result[0].stripe_cust_id && result[0].stripe_cust_id.length > 0) {
 			retVal.stripeCustId = result[0].stripe_cust_id
-			const subscript = await StripeService.getStripeSubscript(
-				result[0].stripe_cust_id,
-			)
-			if (typeof subscript === 'boolean') {
-				retVal.hasActiveSubscription = subscript
-			}
+			const subscript = await stripe.subscriptions.list({
+				limit: 1,
+				status: 'active',
+				customer: retVal.stripeCustId,
+			})
+      if (subscript.data[0]) {
+        retVal.hasActiveSubscription = true
+      }
 		}
 
 		c.status(200)

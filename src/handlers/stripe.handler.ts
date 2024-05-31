@@ -1,7 +1,7 @@
 import { createFactory } from '@hono/hono/factory'
 import { stripe } from '../deps.ts'
 import config from '../config/default.ts'
-import { donationSchema,stripeSubscriptSchema } from '../db/schema/zod.ts'
+import { donationSchema, stripeSubscriptSchema } from '../db/schema/zod.ts'
 
 const factory = createFactory()
 

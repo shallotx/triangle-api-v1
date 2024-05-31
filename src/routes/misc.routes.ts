@@ -10,9 +10,11 @@ import {
 	links,
 } from '../db/schema/misc.schema.ts'
 import { products } from '../db/schema/products.schema.ts'
+import { emailSchema, type emailType } from '../db/schema/zod.ts'
+import EmailService from '../services/email.service.ts'
 
 const router = new Hono()
- 
+
 router.get('/donationcodes', async (c) => {
 	const sql = neon(config.dbURL)
 	const db = drizzle(sql)
@@ -76,8 +78,33 @@ router.get('/products', async (c) => {
 	})
 })
 
- 
-// router.post('/sendmail', miscController.sendmail)
+/**
+ ** Send Contact email from Triangle Website
+ */
+router.post('/sendmail', async (c) => {
+	const res = emailSchema.safeParse(await c.req.json())
+	if (!res.success) {
+		c.status(400)
+		return c.json({ status: 'failure', message: 'Incorrect Data' })
+	}
+	const emailData: emailType = res.data
+	await EmailService.sendContactEmail(emailData)
+	return c.json('Email sent', 200)
+})
+
+/**
+ ** Send Support email from Triangle Website
+ */
+router.post('/sendmail/support', async (c) => {
+	const res = emailSchema.safeParse(await c.req.json())
+	if (!res.success) {
+		c.status(400)
+		return c.json({ status: 'failure', message: 'Incorrect Data' })
+	}
+	const emailData: emailType = res.data
+	await EmailService.sendSupportEmail(emailData)
+	return c.json('Email sent', 200)
+})
 // // router.post('/sendInviteEmail', miscController.sendInviteEmail)
 // router.get('/download/members', miscController.getMembersForCSV)
 

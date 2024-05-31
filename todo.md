@@ -1,7 +1,7 @@
 ## ToDo's
 
 - **Triangle Website**
-  - meeting routes (done 5/19/24)
+  - meeting routes (done 5/31/24)
     - /
     - /meetingtypes
     - /virtual
@@ -10,7 +10,9 @@
     - /discussiontypes
     - /donationcodes
     - /sendmail
-      - contact from Triangle Website, tested 5/19/25
+      - contact from Triangle Website, tested 5/31/24
+    - /sendmail/support
+      - support from Triangle Website, tested 5/31/24
 
   - stripe routes
     - /portal/:customerId
