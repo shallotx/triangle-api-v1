@@ -19,10 +19,9 @@ const corsConfig = {
 	origin: [
 		'https://atlantatriangleclub.org',
 		'https://admin.atlantatriangleclub.org',
-		'http://localhost:5173',
 		'http://localhost:8000',
 		'http://localhost:3000',
-		'https://triangle-next.netlify.app',
+		'https://triangle-v10.deno.dev',
 		'https://triangle-admin.netlify.app',
 	],
 }
