@@ -7,8 +7,8 @@ import miscRoutes from './routes/misc.routes.ts'
 import meetingRoutes from './routes/meeting.routes.ts'
 import memberRoutes from './routes/member.routes.ts'
 import adminRoutes from './routes/admin.routes.ts'
-// import stripeRoutes from './routes/stripe.routes.ts'
-// import authRoutes from './routes/auth.routes.ts'
+import stripeRoutes from './routes/stripe.routes.ts'
+import authRoutes from './routes/auth.routes.ts'
 
 // import memberOtherRoutes from './routes/memberOther.routes.ts'
 
@@ -47,8 +47,8 @@ app.route('/meetings', meetingRoutes)
 app.route('/misc', miscRoutes)
 app.route('/members', memberRoutes)
 app.route('/admin', adminRoutes)
-// app.route('/stripe', stripeRoutes)
-// app.route('/auth', authRoutes)
+app.route('/stripe', stripeRoutes)
+app.route('/auth', authRoutes)
 
 // app.route('/membersother', memberOtherRoutes)
 

@@ -4,7 +4,7 @@ import membersHandler from '../handlers/members.handler.ts'
 
 const router = new Hono()
 /**
-* Todo: Need auth here!
+ * Todo: Need auth here!
  */
 router.get('/download/members', ...membersHandler.getMembersForCSV)
 

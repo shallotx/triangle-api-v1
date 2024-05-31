@@ -1,25 +1,35 @@
 import { Hono } from '@hono/hono'
-import stripeController from '../controllers/stripe.controller.ts'
-import auth from '../middleware/auth.ts'
+import authWS from '../middleware/authWS.ts'
+import stripeHandler from '../handlers/stripe.handler.ts'
+
 const router = new Hono()
 
-router.get('/promotioncodes', stripeController.getPromotionCodes)
-router.post('/donation', stripeController.createDonationCheckout)
-router.post('/createSubscript', stripeController.createStripeSubscript)
-router.post(
-	'/portal/:customerId',
-	auth([]),
-	stripeController.createPortalSession,
-)
+/**
+ ** Triangle Website
+ */
+router.get('/promotioncodes', ...stripeHandler.getPromotioncodes)
+router.post('/donation', ...stripeHandler.createDonationCheckout)
+router.post('/createSubscript', ...stripeHandler.createStripeSubscript)
 router.get(
 	'/subscriptions/:customerId',
-	auth([]),
-	stripeController.getSubscriptionsForCust,
+	authWS(),
+	...stripeHandler.getSubscriptionsForCust,
 )
-router.get(
-	'/admin/subscriptions/:customerId',
-	auth([]),
-	stripeController.getSubscriptionsForCustAdmin,
+
+/**
+ * Admin Website
+ */
+
+// router.get(
+// 	'/admin/subscriptions/:customerId',
+// 	auth([]),
+// 	stripeController.getSubscriptionsForCustAdmin,
+// )
+
+router.post(
+	'/portal/:customerId',
+	authWS(),
+	...stripeHandler.createBillingPortal,
 )
 
 export default router

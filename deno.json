@@ -1,9 +1,7 @@
 {
 	"tasks": {
-		"start": "deno run --unstable-kv --allow-sys --allow-net --allow-read --allow-write --allow-env src/server.ts",
-		"kvUtility": "deno run --unstable-kv --allow-net --allow-read --allow-write --allow-env src/tasks/kvUtility.ts",
-		"dumpKv": "deno run --unstable-kv --allow-net --allow-read --allow-write --allow-env src/tasks/db_dump.ts"
-	},
+		"start": "deno run --allow-sys --allow-net --allow-read --allow-write --allow-env src/server.ts"
+			},
 	"imports": {
 		"@cross/jwt": "jsr:@cross/jwt@^0.4.8",
 		"@hono/hono": "jsr:@hono/hono@^4.4.0",

@@ -55,9 +55,9 @@ const checkForMembership = factory.createHandlers(async (c) => {
 				status: 'active',
 				customer: retVal.stripeCustId,
 			})
-      if (subscript.data[0]) {
-        retVal.hasActiveSubscription = true
-      }
+			if (subscript.data[0]) {
+				retVal.hasActiveSubscription = true
+			}
 		}
 
 		c.status(200)
