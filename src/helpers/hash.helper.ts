@@ -35,8 +35,8 @@ class HashHelper {
 		_hash: string,
 	): Promise<boolean> {
 		// may 14 trying sync because the regular has does not work on deno deploy
-		return await compareSync(plain, _hash)
-		// return await compare(plain, _hash);
+		// return await compareSync(plain, _hash)
+		return await compare(plain, _hash);
 	}
 }
 
