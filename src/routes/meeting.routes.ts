@@ -1,4 +1,4 @@
-import { Hono } from '@hono/hono'
+import { Context, Hono } from '@hono/hono'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/neon-http'
 import { neon } from '@neon/serverless'
@@ -12,7 +12,7 @@ import {
 
 const router = new Hono()
 
-router.get('/', async (c) => {
+router.get('/', async (c: Context) => {
 	const sql = neon(config.dbURL)
 	const db = drizzle(sql)
 	const isActive = true
@@ -41,7 +41,7 @@ router.get('/', async (c) => {
 	})
 })
 
-router.get('/meetingtypes', async (c) => {
+router.get('/meetingtypes', async (c: Context) => {
 	const sql = neon(config.dbURL)
 	const db = drizzle(sql)
 	const isActive = true
@@ -54,7 +54,7 @@ router.get('/meetingtypes', async (c) => {
 	})
 })
 
-router.get('/virtual', async (c) => {
+router.get('/virtual', async (c: Context) => {
 	const sql = neon(config.dbURL)
 	const db = drizzle(sql)
 	const isActive = true
