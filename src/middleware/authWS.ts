@@ -1,9 +1,9 @@
-import type { Context, MiddlewareHandler } from '@hono/hono'
+import type { Context, MiddlewareHandler, Next } from '@hono/hono'
 import { HTTPException } from '@hono/hono/http-exception'
 import JwtHelper from '../helpers/jwt.helper.ts'
 
 const authWs = (): MiddlewareHandler => {
-	return async (c: Context, next) => {
+	return async (c: Context, next: Next) => {
 		if (!c.req.raw.headers.has('Authorization')) {
 			const res = new Response('Unauthorized', {
 				status: 401,

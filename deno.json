@@ -12,8 +12,6 @@
 		"drizzle-orm": "npm:drizzle-orm@0.36.4"
 	},
 
- 
-
 "fmt": {
 		"useTabs": true,
 		"lineWidth": 80,
