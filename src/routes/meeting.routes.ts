@@ -1,4 +1,4 @@
-import { Context, Hono } from '@hono/hono'
+import { type Context, Hono } from '@hono/hono'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/neon-http'
 import { neon } from '@neon/serverless'
@@ -8,13 +8,13 @@ import {
 	meeting_type,
 	meetings,
 	virtual_meetings,
-} from '../db/schema/meetings.schema.ts'
+} from '../schema/meeting.ts'
 
 const router = new Hono()
 
 router.get('/', async (c: Context) => {
 	const sql = neon(config.dbURL)
-	const db = drizzle(sql)
+	const db = drizzle({ client: sql })
 	const isActive = true
 	const result = await db.select({
 		id: meetings.id,
@@ -43,7 +43,7 @@ router.get('/', async (c: Context) => {
 
 router.get('/meetingtypes', async (c: Context) => {
 	const sql = neon(config.dbURL)
-	const db = drizzle(sql)
+	const db = drizzle({ client: sql })
 	const isActive = true
 	const result = await db.select().from(meeting_type)
 		.where(eq(meeting_type.is_active, isActive))
@@ -56,7 +56,7 @@ router.get('/meetingtypes', async (c: Context) => {
 
 router.get('/virtual', async (c: Context) => {
 	const sql = neon(config.dbURL)
-	const db = drizzle(sql)
+	const db = drizzle({ client: sql })
 	const isActive = true
 	const result = await db.select().from(virtual_meetings)
 		.where(eq(virtual_meetings.is_active, isActive))

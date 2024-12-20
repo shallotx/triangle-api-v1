@@ -15,6 +15,7 @@ export const links = pgTable('links', {
 	link_type: text('link_type'),
 	href: text('href'),
 	name: text('name'),
+	is_active: boolean('is_active'),
 	created_at: timestamp('created_at', { precision: 6, withTimezone: true }),
 	updated_at: timestamp('updated_at', { precision: 6, withTimezone: true }),
 })

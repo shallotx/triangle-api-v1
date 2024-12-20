@@ -1,39 +1,31 @@
 {
   "version": "4",
   "specifiers": {
-    "jsr:@cross/deepmerge@1": "1.0.0",
-    "jsr:@cross/fs@~0.1.11": "0.1.11",
-    "jsr:@cross/jwt@~0.4.8": "0.4.9",
     "jsr:@hono/hono@^4.6.10": "4.6.12",
     "jsr:@std/dotenv@~0.225.2": "0.225.2",
-    "jsr:@std/encoding@~0.224.2": "0.224.3",
+    "jsr:@std/encoding@0.224.0": "0.224.0",
+    "jsr:@zaubrik/djwt@^3.0.2": "3.0.2",
     "npm:@neondatabase/serverless@*": "0.10.4",
+    "npm:crypto-random-string@*": "5.0.0",
     "npm:drizzle-orm@0.36.4": "0.36.4_@neondatabase+serverless@0.10.4",
-    "npm:stripe@14.10": "14.10.0"
+    "npm:stripe@14.10": "14.10.0",
+    "npm:stripe@17.4.0": "17.4.0"
   },
   "jsr": {
-    "@cross/deepmerge@1.0.0": {
-      "integrity": "1e1318a74e31ba1959b9aa0acae8bd417b806f74ffd25ac07c90e12f83ad6b1d"
-    },
-    "@cross/fs@0.1.11": {
-      "integrity": "88fdde19a5c0b5517ccd1bf087a2cdae8f4e9acbd54b9688f5332af574b49f7d"
-    },
-    "@cross/jwt@0.4.9": {
-      "integrity": "d272b54002c90a7084d92c7446738775d9a99f1c5e429e3fbc5a50f55b92af7d",
-      "dependencies": [
-        "jsr:@cross/deepmerge",
-        "jsr:@cross/fs",
-        "jsr:@std/encoding"
-      ]
-    },
     "@hono/hono@4.6.12": {
       "integrity": "fa0b97fa7c3292f0d9957109ac07a475fe485868795b71b8e3114c284152cdb5"
     },
     "@std/dotenv@0.225.2": {
       "integrity": "e2025dce4de6c7bca21dece8baddd4262b09d5187217e231b033e088e0c4dd23"
     },
-    "@std/encoding@0.224.3": {
-      "integrity": "5e861b6d81be5359fad4155e591acf17c0207b595112d1840998bb9f476dbdaf"
+    "@std/encoding@0.224.0": {
+      "integrity": "efb6dca97d3e9c31392bd5c8cfd9f9fc9decf5a1f4d1f78af7900a493bcf89b5"
+    },
+    "@zaubrik/djwt@3.0.2": {
+      "integrity": "8070adaa49cd9e5d2b8ae82fd461132c966ef2f8ff8378db4a4da8df4f17c664",
+      "dependencies": [
+        "jsr:@std/encoding"
+      ]
     }
   },
   "npm": {
@@ -71,6 +63,12 @@
         "function-bind",
         "get-intrinsic",
         "set-function-length"
+      ]
+    },
+    "crypto-random-string@5.0.0": {
+      "integrity": "sha512-KWjTXWwxFd6a94m5CdRGW/t82Tr8DoBc9dNnPCAbFI1EBweN6v1tv8y4Y1m7ndkp/nkIBRxUxAzpaBnR2k3bcQ==",
+      "dependencies": [
+        "type-fest"
       ]
     },
     "define-data-property@1.1.4": {
@@ -211,6 +209,16 @@
         "qs"
       ]
     },
+    "stripe@17.4.0": {
+      "integrity": "sha512-sQQGZguPxe7/QYXJKtDpfzT2OAH9F8nyE2SOsVdTU793iiU33/dpaKgWaJEGJm8396Yy/6NvTLblgdHlueGLhA==",
+      "dependencies": [
+        "@types/node@22.10.1",
+        "qs"
+      ]
+    },
+    "type-fest@2.19.0": {
+      "integrity": "sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA=="
+    },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     },
@@ -277,12 +285,13 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@cross/jwt@~0.4.8",
       "jsr:@hono/hono@^4.6.10",
       "jsr:@std/crypto@^1.0.3",
       "jsr:@std/dotenv@~0.225.2",
       "jsr:@std/encoding@^1.0.5",
+      "jsr:@zaubrik/djwt@^3.0.2",
       "npm:@neondatabase/serverless@*",
+      "npm:crypto-random-string@*",
       "npm:drizzle-orm@0.36.4"
     ]
   }

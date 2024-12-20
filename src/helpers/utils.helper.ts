@@ -1,3 +1,5 @@
+import { /* getCookie, */ setCookie } from '@hono/hono/cookie'
+import type { Context } from '@hono/hono'
 class UtilsHelper {
 	public static parseBool = (str: string | null) => {
 		if (str == null) {
@@ -26,6 +28,21 @@ class UtilsHelper {
 			str = str.replace(/^\s*\-\s*/g, '-')
 		}
 		return false
+	}
+	public static setRefreshTokenCookie = (
+		c: Context,
+		token: string,
+		expires: Date,
+	) => {
+		setCookie(c, 'refreshToken', token, {
+			httpOnly: true,
+			// domain: 'atlantatriangleclub.org',
+			path: '/',
+			expires: expires,
+			secure: true,
+			//sameSite: 'None',
+			sameSite: 'Strict',
+		})
 	}
 }
 

@@ -7,6 +7,10 @@ import {
 	timestamp,
 } from 'drizzle-orm/pg-core'
 
+// import { relations } from 'drizzle-orm'
+// import { sql } from 'drizzle-orm'
+import { addresses } from '../schema/address.ts'
+
 export const membersOther = pgTable('members_other', {
 	id: serial('id').primaryKey(),
 	firstname: text('firstname'),
@@ -19,7 +23,9 @@ export const membersOther = pgTable('members_other', {
 	email: text('email'),
 	is_volunteer: boolean('is_volunteer').notNull(),
 	membership_is_active: boolean('membership_is_active').notNull(),
-	address_id: integer('address_id'),
+	address_id: integer('address_id').references(() => addresses.id, {
+		onDelete: 'cascade',
+	}),
 	notes: text('notes'),
 	created_at: timestamp('created_at', { precision: 6, withTimezone: true }),
 	updated_at: timestamp('updated_at', { precision: 6, withTimezone: true }),

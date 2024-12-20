@@ -1,10 +1,10 @@
 import {
 	compare,
-	compareSync,
 	genSalt,
-	genSaltSync,
 	hash,
-	hashSync,
+	/* compareSync,
+	genSaltSync,
+	hashSync, */
 } from '../deps.ts'
 
 class HashHelper {
@@ -13,15 +13,10 @@ class HashHelper {
 	 * @param str
 	 * @returns Promise<string> Returns encrypted password hash
 	 */
-	// public static async encrypt(str: string): Promise<string> {
-	//   const salt = await genSalt(8);
-	//  return hash(str, salt);
-	// }
 
-	// may 14 trying sync because the regular has does not work on deno deploy
 	public static async encrypt(str: string): Promise<string> {
-		const salt = await genSaltSync(8)
-		return hashSync(str, salt)
+		const salt = await genSalt(8)
+		return hash(str, salt)
 	}
 
 	/**
@@ -34,9 +29,7 @@ class HashHelper {
 		plain: string,
 		_hash: string,
 	): Promise<boolean> {
-		// may 14 trying sync because the regular has does not work on deno deploy
-		return await compareSync(plain, _hash)
-		// return await compare(plain, _hash);
+		return await compare(plain, _hash)
 	}
 }
 

@@ -1,36 +1,32 @@
-/// <reference lib="deno.unstable" />
-import { Hono } from '@hono/hono'
+import { type Context, Hono } from '@hono/hono'
 import { cors } from '@hono/hono/cors'
 import { HTTPException } from '@hono/hono/http-exception'
-import { showRoutes } from '@hono/hono/dev'
-import miscRoutes from './routes/misc.routes.ts'
+// import { showRoutes } from "@hono/hono/dev"
 import meetingRoutes from './routes/meeting.routes.ts'
+import miscRoutes from './routes/misc.routes.ts'
 import memberRoutes from './routes/member.routes.ts'
-import adminRoutes from './routes/admin.routes.ts'
+import memberOtherRoutes from './routes/memberOther.routes.ts'
 import stripeRoutes from './routes/stripe.routes.ts'
 import authRoutes from './routes/auth.routes.ts'
-
-// import memberOtherRoutes from './routes/memberOther.routes.ts'
+import adminRoutes from './routes/admin.routes.ts'
 
 const app = new Hono().basePath('/api')
-// app.use('*', cors())
 const corsConfig = {
 	credentials: true,
 	origin: [
 		'https://atlantatriangleclub.org',
 		'https://admin.atlantatriangleclub.org',
+		'https://atlantatriangleclubadmin.org',
 		'http://localhost:8000',
 		'http://localhost:3000',
-		'https://triangle-v10.deno.dev',
-		'https://triangle-admin.netlify.app',
+		'https://triangle-web-fly.fly.dev',
+		'https://triangle-admin-fly.fly.dev',
 	],
 }
 app.use('*', cors(corsConfig))
-// app.use("*", logger());
-app.notFound((c) => c.json({ message: 'Not Found', ok: false }, 404))
 
 // Error handling
-app.onError((err, c) => {
+app.onError((err: Error, c: Context) => {
 	console.error(`${err}`)
 	if (err instanceof HTTPException) {
 		return err.getResponse()
@@ -38,18 +34,20 @@ app.onError((err, c) => {
 	return c.text('Custom Error Message', 500)
 })
 
-app.get('/', (c) => {
+app.notFound((c: Context) => c.json({ message: 'Not Found', ok: false }, 404))
+
+app.get('/', (c: Context) => {
 	return c.text('Hello Hono!')
 })
 
-app.route('/meetings', meetingRoutes)
 app.route('/misc', miscRoutes)
-app.route('/members', memberRoutes)
-app.route('/admin', adminRoutes)
+app.route('/meetings', meetingRoutes)
 app.route('/stripe', stripeRoutes)
 app.route('/auth', authRoutes)
-
-// app.route('/membersother', memberOtherRoutes)
+app.route('/members', memberRoutes)
+app.route('/membersother', memberOtherRoutes)
+app.route('/membersother', memberOtherRoutes)
+app.route('/admin', adminRoutes)
 
 // showRoutes(app)
 

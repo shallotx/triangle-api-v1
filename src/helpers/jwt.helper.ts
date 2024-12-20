@@ -1,17 +1,12 @@
-import { type JWTPayload, signJWT, validateJWT } from '@cross/jwt'
-import config from '../config/default.ts'
+import { create, decode, verify } from '@zaubrik/djwt'
+import type { Header, Payload } from '@zaubrik/djwt'
+// import { HTTPException } from '@hono/hono/http-exception'
 
-// const key = await crypto.subtle.generateKey(
-// 	{ name: 'HMAC', hash: 'SHA-512' },
-// 	true,
-// 	['sign', 'verify'],
-// )
-
-const key = 'mySuperSecretAtLeast32CharsLong!'
-
-const options = {
-	validateExp: true,
-}
+const key = await crypto.subtle.generateKey(
+	{ name: 'HMAC', hash: 'SHA-512' },
+	true,
+	['sign', 'verify'],
+)
 
 class JwtHelper {
 	/**
@@ -24,51 +19,52 @@ class JwtHelper {
 		exp: number,
 		id: number,
 	): Promise<string> {
-		// const now = Date.now(); // in millis
 		const nowTs = Math.round(Date.now() / 1000) //in secs
-		const payload = {
+		// const now = Date.now(); // in millis
+		const header: Header = {
+			alg: 'HS512',
+			typ: 'JWT',
+		}
+		const payload: Payload = {
 			iss: 'deno_rest',
 			iat: nowTs,
 			id,
 			exp,
 		}
-		return signJWT(payload, key, options)
+
+		return create(header, payload, key)
 	}
 
 	/**
 	 * Validates JWT and returns JWT payload
 	 * @param token
-	 * @returns Promise<any>
+	 * @returns Promise<Payload | Error> Returns JWT payload
 	 */
 	public static async getJwtPayload(
 		token: string,
-	): Promise<string | JWTPayload> {
+	): Promise<Payload | string> {
 		try {
-			const res = await validateJWT(token, key, options)
-			return res
+			return await verify(token, key)
+		} catch (_error) {
+			// const errorResponse = new Response('Unauthorized', {
+			// 	status: 401,
+			// 	headers: {
+			// 		Authenticate: 'error="invalid_token"',
+			// 	},
+			// })
+			return 'invalid_token'
+			// throw new HTTPException(401, { res: errorResponse })
+		}
+	}
+	public static async decodeJwt(
+		token: string,
+		// deno-lint-ignore no-explicit-any
+	): Promise<[any, any, any] | string> {
+		try {
+			return await decode(token)
 		} catch (_error) {
 			return 'invalid_token'
 		}
-	}
-
-	public static async generateAuthToken(
-		memberId: number,
-		tokenType: string,
-	): Promise<string> {
-		const nowTs = Math.round(Date.now() / 1000) //in secs
-		let accessTokenExpires = 0
-		if (tokenType === 'access') {
-			accessTokenExpires = nowTs + (config.jwtAccessExpiration * 1) // 3600 secs  or 1 hr
-
-			// for testing, make this 2 minutes
-			accessTokenExpires = nowTs + (120 * 1)
-		} else {
-			//refresh token
-			accessTokenExpires = nowTs + (config.jwtRefeshExpiration * 1) // 86400 secs or 1 days
-			// for testing, make this 4 minutes
-			accessTokenExpires = nowTs + (240 * 1)
-		}
-		return await JwtHelper.createToken(accessTokenExpires, memberId)
 	}
 }
 

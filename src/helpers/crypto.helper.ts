@@ -1,7 +1,6 @@
-import { crypto } from 'https://deno.land/std@0.209.0/crypto/crypto.ts'
-import { encodeHex } from 'https://deno.land/std@0.207.0/encoding/hex.ts'
-import { cryptoRandomString } from 'https://deno.land/x/crypto_random_string@1.0.0/mod.ts'
-import { HashResult } from '../db/schema/zod.ts'
+import { encodeHex } from '../helpers/hex.ts'
+import cryptoRandomString from 'crypto-random-string'
+import type { HashResult } from '../schema/zod.ts'
 
 class CryptoHelper {
 	/**

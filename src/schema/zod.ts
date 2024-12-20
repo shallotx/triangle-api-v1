@@ -1,6 +1,6 @@
-import { z } from '../../deps.ts'
+import { z } from 'https://deno.land/x/zod@v3.23.8/mod.ts'
 
-const stripePriceSchema = z.object({
+export const stripePriceSchema = z.object({
 	priceId: z.string(),
 	interval: z.string(),
 	interval_count: z.number(),
@@ -12,10 +12,12 @@ const stripeSubscriptInfoSchema = z.object({
 	subscriptId: z.string(),
 	customerId: z.string(),
 	customerEmail: z.string(),
+	defaultPaymentMethod: z.string(),
+	custPaymentMethod: z.string(),
 	status: z.string(),
+	subscriptCreated: z.date(),
 	currPeriodStart: z.date(),
 	currPeriodEnd: z.date(),
-	created: z.date(),
 	priceInfo: stripePriceSchema,
 })
 export type stripeSubscriptInfoType = z.infer<typeof stripeSubscriptInfoSchema>
@@ -35,6 +37,11 @@ export const stripeSubscriptSchema = z.object({
 	promotionCodeId: z.string(),
 })
 
+export const stripeCreateCustomerSchema = z.object({
+	email: z.string(),
+	name: z.string(),
+})
+
 export const stripeRenewSubscriptSchema = z.object({
 	priceData: priceData,
 	stripeCustId: z.string(),
@@ -42,7 +49,19 @@ export const stripeRenewSubscriptSchema = z.object({
 	promotionCodeId: z.string(),
 })
 
-export const donationSchema = z.object({
+export const productPaymentSchema = z.object({
+	price: z.number(),
+	qty: z.number(),
+	img_url: z.string(),
+	productDescript: z.string(),
+	payIntentDescript: z.string(),
+	productName: z.string(),
+	stripeProduct: z.string(),
+})
+
+export const productPaymentsSchema = z.array(productPaymentSchema)
+
+export const donationPaymentSchema = z.object({
 	amount: z.number(),
 	stripeProduct: z.string(),
 	custEmail: z.string(),
@@ -76,12 +95,13 @@ export const emailSchema = z.object({
 
 export type emailType = z.infer<typeof emailSchema>
 
-export const membershipCheckSchema = z.object({
-	emailExists: z.boolean(),
-	stripeCustId: z.string(),
-	hasActiveSubscription: z.boolean(),
+export const emailSendSchema = emailSchema.extend({
+	subject: z.string(),
+	from: z.string(),
+	html: z.string(),
 })
-export type membershipCheck = z.infer<typeof membershipCheckSchema>
+
+export type emailSend = z.infer<typeof emailSendSchema>
 
 export const memberInsertSchema = z.object({
 	firstname: z.string(),
@@ -104,9 +124,18 @@ export const memberOtherInsertSchema = z.object({
 	is_volunteer: z.boolean(),
 	membership_is_active: z.boolean(),
 	notes: z.string().optional(),
-	address_id: z.number().optional(),
+	address: z.number().optional(),
 })
 export type memberOtherInsert = z.infer<typeof memberOtherInsertSchema>
+
+export const memberOtherUpdateStatusSchema = z.object({
+	updated_by_id: z.number(),
+	updateReason: z.string(),
+	currentStatus: z.boolean(),
+})
+export type memberOtherUpdateStatus = z.infer<
+	typeof memberOtherUpdateStatusSchema
+>
 
 export const addressInsertSchema = z.object({
 	address1: z.string(),
@@ -127,6 +156,15 @@ export const paymentInfoInsertSchema = z.object({
 })
 
 export type paymentInfoInsert = z.infer<typeof paymentInfoInsertSchema>
+
+export const paymentInsertSchema = z.object({
+	pay_amount: z.number(),
+	last_pay_date: z.number(),
+	note: z.string().optional(),
+	payment_info_id: z.number(),
+})
+
+export type paymentInsert = z.infer<typeof paymentInsertSchema>
 
 export const adminUserInsertSchema = z.object({
 	firstname: z.string(),
@@ -154,4 +192,25 @@ export type adminUserWithRoles = z.infer<typeof adminUserWithRolesSchema>
 export interface HashResult {
 	hash: string
 	salt: string
+}
+
+export interface EmailSend {
+	emailTo: string
+	emailFrom: string
+	subject: string
+	textBody?: string
+	htmlBody?: string
+}
+
+export interface SubscriptionInfo {
+	eventId: string
+	type: string
+	stripeCustomer?: string
+	eventDate: Date
+	member: {
+		id: number
+		firstname: string
+		lastname: string
+		email: string
+	}
 }

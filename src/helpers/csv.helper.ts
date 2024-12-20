@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 const quote = '"'
 const quoteRegex = /"/g
 const delimiter = ','

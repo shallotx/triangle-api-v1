@@ -1,5 +1,4 @@
-import { type emailType } from '../db/schema/zod.ts'
-import config from '../config/default.ts'
+import { type emailSend, type emailType } from '../schema/zod.ts'
 
 class EmailService {
 	/*
@@ -8,10 +7,12 @@ class EmailService {
 	*/
 	public static async sendContactEmail(
 		emailData: emailType,
+		emailTo: string,
+		mailApiKey: string,
 	): Promise<boolean> {
 		const bdy = {
 			From: 'contact@atlantatriangleclub.org',
-			To: config.emailTo,
+			To: emailTo,
 			Subject: 'Contact Request from Website',
 			TextBody: 'string',
 			HtmlBody: `<h4>Contact</h4>
@@ -26,8 +27,7 @@ class EmailService {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
-				'X-Postmark-Server-Token':
-					'9c1cb171-10c0-41e7-85e8-b56cca5bc1c0',
+				'X-Postmark-Server-Token': mailApiKey,
 			},
 			body: JSON.stringify(bdy),
 		})
@@ -38,26 +38,21 @@ class EmailService {
 		return false
 	}
 
-	/**
-	 ** This is to send email from Support page on Website.  It uses the
-	 ** Resend mail api
-	 */
-	public static async sendSupportEmail(toSend: emailType): Promise<boolean> {
+	public static async sendResendEmail(
+		emailPayload: emailSend,
+		resendKey: string,
+	): Promise<boolean> {
 		const res = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${config.resendKey}`,
+				'Authorization': `Bearer ${resendKey}`,
 			},
 			body: JSON.stringify({
-				from: 'Triangle <support@support.atlantatriangleclub.dev>',
-				to: ['dev@shallotx.com'],
-				subject: 'Triangle Website Support',
-				html: `<h3>Support Request from ${toSend.name}</h3>
-						<br>
-						<a href="mailto:${toSend.email}">Email from ${toSend.email}</a>
-						<p>Message: ${toSend.text}</</p>
-						`,
+				from: emailPayload.from,
+				to: emailPayload.email,
+				subject: emailPayload.subject,
+				html: emailPayload.html,
 			}),
 		})
 
