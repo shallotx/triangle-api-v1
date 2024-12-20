@@ -19,7 +19,7 @@ const corsConfig = {
 		'https://atlantatriangleclubadmin.org',
 		'http://localhost:8000',
 		'http://localhost:3000',
-		'https://triangle-web-fly.fly.dev',
+		'https://triangle-web-deno.deno.dev',
 		'https://triangle-admin-fly.fly.dev',
 	],
 }
